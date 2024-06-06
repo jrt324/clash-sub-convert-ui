@@ -1,6 +1,11 @@
 # clash-sub-convert-ui
 
-This template should help get you started developing with Vue 3 in Vite.
+这是[mergeSub](https://github.com/jrt324/mergeSub)的UI界面，方便可视化操作。
+
+如果你想把少量的vps部署的ss、ssr、Vmess、Trojan等Proxy合并到你订阅的链接中，但是又嫌编辑yaml麻烦，这个工具帮你把他们全部合并成一个链接，方便导入clash。
+
+
+访问地址：https://clash-sub-convert-ui.pages.dev/
 
 ## Recommended IDE Setup
 
