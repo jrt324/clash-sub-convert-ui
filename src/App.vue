@@ -26,16 +26,19 @@ export default defineComponent({
     proxyAdd() {
       this.form.proxies.push({ name: '', value: '' })
     },
-    proxyRemove() {
+    proxyRemove(proxy: any) {
       if (this.form.proxies.length === 1) return;
-      this.form.proxies.pop()
+      this.form.proxies = this.form.proxies.filter(p => p !== proxy);
+      this.form.groups.forEach(g => {
+        g.proxies = g.proxies.filter(p => p !== proxy.name)
+      })
     },
     groupAdd() {
       this.form.groups.push({ name: '', proxies: [] })
     },
-    groupRemove() {
+    groupRemove(group:any) {
       if (this.form.groups.length === 1) return;
-      this.form.groups.pop()
+      this.form.groups = this.form.groups.filter(g => g !== group)
     },
     proxyChange(val: string, proxy: any) {
       console.log('proxyChange')
@@ -165,7 +168,7 @@ export default defineComponent({
                   <icon-plus />
                 </a-button>
                 <div style="width: 5px;"></div>
-                <a-button type="primary" status="warning" shape="circle" size="mini" @click="proxyRemove">
+                <a-button type="primary" status="warning" shape="circle" size="mini" @click="proxyRemove(proxy)">
                   <icon-minus />
                 </a-button>
               </div>
@@ -189,7 +192,7 @@ export default defineComponent({
                   <icon-plus />
                 </a-button>
                 <div style="width: 5px;"></div>
-                <a-button type="primary" status="warning" shape="circle" size="mini" @click="groupRemove">
+                <a-button type="primary" status="warning" shape="circle" size="mini" @click="groupRemove(group)">
                   <icon-minus />
                 </a-button>
               </div>
