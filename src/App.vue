@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { IconPlus, IconMinus, IconStar, IconCopy } from '@arco-design/web-vue/es/icon';
+import { IconPlus, IconMinus, IconStar, IconCopy, IconGithub } from '@arco-design/web-vue/es/icon';
 import { useClipboard } from '@vueuse/core'
 
 export default defineComponent({
   components: {
-    IconPlus, IconMinus, IconStar, IconCopy
+    IconPlus, IconMinus, IconStar, IconCopy, IconGithub
   },
   data() {
     return {
@@ -138,7 +138,15 @@ export default defineComponent({
 <template>
   <div class="body">
     <div class="header">
-      <div class="header-title">订阅合并转换</div>
+      <div class="header-left">
+        <div class="header-title">订阅合并转换</div>
+        <a style="margin-left:20px ;" href="https://github.com/jrt324/clash-sub-convert-ui" target="_blank">
+          <icon-github size="16px" />
+        </a>
+      </div>
+
+
+      <div>v0.01</div>
     </div>
     <div class="card-content">
       <a-form :model="form" auto-label-width>
@@ -236,16 +244,23 @@ export default defineComponent({
   .header {
     display: flex;
     align-items: center;
-    padding: 14px 14px;
+    padding: 20px 14px;
     border-bottom: 1px solid #ebeef5;
+    justify-content: space-between;
+    font-size: 16px;
 
-    .header-title {
+    &-left {
+      display: flex;
+    }
+
+    &-title {
+      display: flex;
       font-size: 16px;
       font-weight: bold;
     }
   }
 
-  .card-content{
+  .card-content {
     display: flex;
     padding: 20px;
   }
