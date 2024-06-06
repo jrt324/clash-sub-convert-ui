@@ -137,78 +137,84 @@ export default defineComponent({
 
 <template>
   <div class="body">
+    <div class="header">
+      <div class="header-title">订阅合并转换</div>
+    </div>
+    <div class="card-content">
+      <a-form :model="form" auto-label-width>
+        <a-form-item field="subUrl" label="源订阅地址:">
+          <a-input v-model="form.subUrl" placeholder="请输入需要转换的订阅地址..." />
+        </a-form-item>
 
-    <a-form :model="form" auto-label-width>
-      <a-form-item field="subUrl" label="源订阅地址:">
-        <a-input v-model="form.subUrl" placeholder="请输入需要转换的订阅地址..." />
-      </a-form-item>
+        <a-form-item label="添加的Proxies:" :content-flex="false" :merge-props="false">
+          <a-space direction="vertical" fill>
+            <a-form-item hide-label field="proxy.value" v-for="proxy in form.proxies">
+              <a class="proxy-name">{{ proxy.name }}</a>
+              <a-input v-model="proxy.value" @change="val => proxyChange(val, proxy)" />
 
-      <a-form-item label="Proxies:" :content-flex="false" :merge-props="false">
-        <a-space direction="vertical" fill>
-          <a-form-item hide-label field="proxy.value" v-for="proxy in form.proxies">
-            <a class="proxy-name">{{ proxy.name }}</a>
-            <a-input v-model="proxy.value" @change="val => proxyChange(val, proxy)" />
+              <div class="buttons">
+                <a-button type="primary" shape="circle" size="mini" @click="proxyAdd">
+                  <icon-plus />
+                </a-button>
+                <div style="width: 5px;"></div>
+                <a-button type="primary" status="warning" shape="circle" size="mini" @click="proxyRemove">
+                  <icon-minus />
+                </a-button>
+              </div>
 
-            <div class="buttons">
-              <a-button type="primary" shape="circle" size="mini" @click="proxyAdd">
-                <icon-plus />
-              </a-button>
-              <div style="width: 5px;"></div>
-              <a-button type="primary" status="warning" shape="circle" size="mini" @click="proxyRemove">
-                <icon-minus />
-              </a-button>
-            </div>
+            </a-form-item>
+          </a-space>
+        </a-form-item>
 
-          </a-form-item>
-        </a-space>
-      </a-form-item>
+        <a-form-item label="归属Groups:" :content-flex="false" :merge-props="false">
+          <a-space direction="vertical" fill>
+            <a-form-item hide-label field="group.name" v-for="group in form.groups">
+              <div class="group-name"> <a-input v-model="group.name" /></div>
 
-      <a-form-item label="Groups:" :content-flex="false" :merge-props="false">
-        <a-space direction="vertical" fill>
-          <a-form-item hide-label field="group.name" v-for="group in form.groups">
-            <div class="group-name"> <a-input v-model="group.name" /></div>
+              <a-select v-model="group.proxies" multiple>
+                <a-option :value="proxy.name" v-for="proxy in form.proxies.filter(p => p.name)">{{ proxy.name
+                  }}</a-option>
+              </a-select>
 
-            <a-select v-model="group.proxies" multiple>
-              <a-option :value="proxy.name" v-for="proxy in form.proxies.filter(p => p.name)">{{ proxy.name
-                }}</a-option>
-            </a-select>
+              <div class="buttons">
+                <a-button type="primary" shape="circle" size="mini" @click="groupAdd">
+                  <icon-plus />
+                </a-button>
+                <div style="width: 5px;"></div>
+                <a-button type="primary" status="warning" shape="circle" size="mini" @click="groupRemove">
+                  <icon-minus />
+                </a-button>
+              </div>
+            </a-form-item>
 
-            <div class="buttons">
-              <a-button type="primary" shape="circle" size="mini" @click="groupAdd">
-                <icon-plus />
-              </a-button>
-              <div style="width: 5px;"></div>
-              <a-button type="primary" status="warning" shape="circle" size="mini" @click="groupRemove">
-                <icon-minus />
-              </a-button>
-            </div>
-          </a-form-item>
+          </a-space>
+        </a-form-item>
 
-        </a-space>
-      </a-form-item>
+        <a-divider :margin="10" :style="{ marginBottom: '30px' }"><icon-star /></a-divider>
 
-      <a-divider :margin="10" :style="{ marginBottom: '30px' }"><icon-star /></a-divider>
+        <a-form-item field="resultSubUrl" label="定制订阅地址:">
 
-      <a-form-item field="resultSubUrl" label="定制订阅地址:">
-
-        <a-input v-model="form.resultSubUrl" allow-clear>
-          <template #append>
-            <div class="copy" @click="copyResultUrl"><icon-copy />复制</div>
-          </template>
-        </a-input>
-      </a-form-item>
+          <a-input v-model="form.resultSubUrl" allow-clear>
+            <template #append>
+              <div class="copy" @click="copyResultUrl"><icon-copy />复制</div>
+            </template>
+          </a-input>
+        </a-form-item>
 
 
-      <a-form-item>
-        <a-space>
-          <a-button type="primary" status="danger" @click="genSubUrl">生成定制订阅链接</a-button>
+        <a-form-item>
+          <a-space>
+            <a-button type="primary" status="danger" @click="genSubUrl">生成定制订阅链接</a-button>
 
-          <a-button type="primary" status="warning" style="margin-left: 25px;" @click="parseSubUrl">解析定制订阅链接</a-button>
-        </a-space>
+            <a-button type="primary" status="warning" style="margin-left: 25px;"
+              @click="parseSubUrl">解析定制订阅链接</a-button>
+          </a-space>
 
-      </a-form-item>
+        </a-form-item>
 
-    </a-form>
+      </a-form>
+    </div>
+
   </div>
 
 
@@ -217,14 +223,32 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .body {
-  margin: 15px;
+  margin: 8px;
   box-sizing: border-box;
   border: 1px solid #ebeef5;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
   display: flex;
-  padding: 20px;
+  flex-direction: column;
+  // padding: 20px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 14px 14px;
+    border-bottom: 1px solid #ebeef5;
+
+    .header-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
+  .card-content{
+    display: flex;
+    padding: 20px;
+  }
 
   .row {
     display: flex;
