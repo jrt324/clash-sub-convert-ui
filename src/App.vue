@@ -67,7 +67,7 @@ export default defineComponent({
         this.$message.warning('Groups至少填写一个!')
         return;
       }
-      let apiUrl = "https://net.aizsk.pro:8081/convert1";
+      let apiUrl = "https://subconvert.aizsk.pro/";
       let proxiesList = this.form.proxies.filter(p => p.name).map(p => JSON.parse(p.value));
       let proxiesBase64 = encodeURIComponent(this.utf8ToBase64(JSON.stringify(proxiesList)));
       let groupsBase64 = encodeURIComponent(this.utf8ToBase64(JSON.stringify(this.form.groups)));
