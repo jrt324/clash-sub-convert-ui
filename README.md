@@ -5,7 +5,7 @@
 如果你想把少量的vps部署的ss、ssr、Vmess、Trojan等Proxy合并到你订阅的链接中，但是又嫌编辑yaml麻烦，这个工具帮你把他们全部合并成一个链接，方便导入clash。
 
 
-访问地址：https://clash-sub-convert-ui.pages.dev/
+Demo访问地址：https://clash-sub-convert-ui.pages.dev/
 
 ## Recommended IDE Setup
 
